@@ -50,7 +50,7 @@ void TicTacToe::Play(uint32_t index) {
     return;
   }
 
-  MinMax(state, 'O', 0);
+  MinMax(state, 'O', 0, -10, 10);
   UpdateButtons();
   possibleMoves = GetPossibleMoves(state, nullptr);
   winner = GetWinner(state);
@@ -118,7 +118,7 @@ int TicTacToe::GetPossibleMoves(char state[9], int moves[9]) {
   return numberOfMoves;
 }
 
-int TicTacToe::MinMax(char state[9], char player, int turn) {
+int TicTacToe::MinMax(char state[9], char player, int turn, int alpha, int beta) {
   int possibleMoves[9];
   int possibleMoveCount = GetPossibleMoves(state, possibleMoves);
   char winner = GetWinner(state);
@@ -135,14 +135,24 @@ int TicTacToe::MinMax(char state[9], char player, int turn) {
   for (int i = 0; i < possibleMoveCount; i++) {
     int possibleMove = possibleMoves[i];
     state[possibleMove] = player;
-    int possibleScore = MinMax(state, player == 'X' ? 'O' : 'X', turn + 1);
+    int possibleScore = MinMax(state, player == 'X' ? 'O' : 'X', turn + 1, alpha, beta);
     state[possibleMove] = ' ';
-    if (
-      (player == 'X' && possibleScore < bestMoveScore) ||
-      (player == 'O' && possibleScore > bestMoveScore)
-    ) {
-      bestMove = possibleMove;
-      bestMoveScore = possibleScore;
+    if (player == 'X') {
+      if (possibleScore < bestMoveScore) {
+        bestMove = possibleMove;
+        bestMoveScore = possibleScore;
+      }
+      if (bestMoveScore > alpha) {
+        alpha = bestMoveScore;
+      }
+    } else {
+      if (possibleScore > bestMoveScore) {
+        bestMove = possibleMove;
+        bestMoveScore = possibleScore;
+      }
+      if (bestMoveScore < beta) {
+        beta = bestMoveScore;
+      }
     }
   }
   if (turn == 0) {

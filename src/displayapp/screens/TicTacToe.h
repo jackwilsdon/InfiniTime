@@ -31,7 +31,7 @@ namespace Pinetime {
         lv_obj_t *gameOverLabel;
         static char GetWinner(char state[9]);
         static int GetPossibleMoves(char state[9], int moves[9]);
-        static int MinMax(char state[9], char player, int turn);
+        static int MinMax(char state[9], char player, int turn, int alpha, int beta);
         void UpdateButtons();
         void GameOver(char winner);
       };
