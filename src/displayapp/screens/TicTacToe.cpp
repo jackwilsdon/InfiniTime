@@ -36,6 +36,11 @@ TicTacToe::~TicTacToe() {
 }
 
 void TicTacToe::Play(uint32_t index) {
+  if (!lv_obj_get_hidden(gameOverLabel)) {
+    // Game is over.
+    return;
+  }
+
   state[index] = 'X';
   UpdateButtons();
   int possibleMoves = GetPossibleMoves(state, nullptr);
