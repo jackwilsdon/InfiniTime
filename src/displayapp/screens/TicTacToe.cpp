@@ -127,13 +127,11 @@ int TicTacToe::MinMax(char state[9], char player, int turn) {
 
   int bestMove = 0;
   int bestMoveScore = player == 'X' ? 1 : -1;
-  char possibleState[9];
   for (int i = 0; i < possibleMoveCount; i++) {
-    memcpy(possibleState, state, 9);
     int possibleMove = possibleMoves[i];
-    possibleState[possibleMove] = player;
-
-    int possibleScore = MinMax(possibleState, player == 'X' ? 'O' : 'X', turn + 1);
+    state[possibleMove] = player;
+    int possibleScore = MinMax(state, player == 'X' ? 'O' : 'X', turn + 1);
+    state[possibleMove] = ' ';
     if (
       (player == 'X' && possibleScore < bestMoveScore) ||
       (player == 'O' && possibleScore > bestMoveScore)
@@ -142,7 +140,9 @@ int TicTacToe::MinMax(char state[9], char player, int turn) {
       bestMoveScore = possibleScore;
     }
   }
-  state[bestMove] = player;
+  if (turn == 0) {
+    state[bestMove] = player;
+  }
   return bestMoveScore;
 }
 
