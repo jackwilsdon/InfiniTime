@@ -5,5 +5,11 @@
       "output_format": "bin",
       "binary_format": "ARGB8565_RBSWAP",
       "target_path": "/images/"
+   },
+   "bg_clock": {
+      "sources": "images/bg_clock.png",
+      "color_format": "CF_INDEXED_2_BIT",
+      "output_format": "bin",
+      "target_path": "/images/"
    }
 }
