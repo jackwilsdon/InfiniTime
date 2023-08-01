@@ -239,7 +239,7 @@ void SystemTask::Work() {
         case Messages::OnNewTime:
           displayApp.PushMessage(Pinetime::Applications::Display::Messages::RestoreBrightness);
           displayApp.PushMessage(Pinetime::Applications::Display::Messages::UpdateDateTime);
-          if (alarmController.State() == Controllers::AlarmController::AlarmState::Set) {
+          if (alarmController.IsEnabled()) {
             alarmController.ScheduleAlarm();
           }
           break;
@@ -337,8 +337,7 @@ void SystemTask::Work() {
         case Messages::OnNewHour:
           using Pinetime::Controllers::AlarmController;
           if (settingsController.GetNotificationStatus() != Controllers::Settings::Notification::Sleep &&
-              settingsController.GetChimeOption() == Controllers::Settings::ChimesOption::Hours &&
-              alarmController.State() != AlarmController::AlarmState::Alerting) {
+              settingsController.GetChimeOption() == Controllers::Settings::ChimesOption::Hours && !alarmController.IsAlerting()) {
             if (state == SystemTaskState::Sleeping) {
               GoToRunning();
               displayApp.PushMessage(Pinetime::Applications::Display::Messages::Chime);
@@ -348,8 +347,7 @@ void SystemTask::Work() {
         case Messages::OnNewHalfHour:
           using Pinetime::Controllers::AlarmController;
           if (settingsController.GetNotificationStatus() != Controllers::Settings::Notification::Sleep &&
-              settingsController.GetChimeOption() == Controllers::Settings::ChimesOption::HalfHours &&
-              alarmController.State() != AlarmController::AlarmState::Alerting) {
+              settingsController.GetChimeOption() == Controllers::Settings::ChimesOption::HalfHours && !alarmController.IsAlerting()) {
             if (state == SystemTaskState::Sleeping) {
               GoToRunning();
               displayApp.PushMessage(Pinetime::Applications::Display::Messages::Chime);
